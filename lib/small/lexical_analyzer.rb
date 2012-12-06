@@ -3,35 +3,14 @@ module Small
 	end
 
 	class LexicalAnalyzer < Analyzer
-		TERMINALS = [
-			/\A(BEGIN)/, 
-			/\A(END)/, 
-			/\A(:=)/, 
-			/\A(READ)/, 
-			/\A(WRITE)/, 
-			/\A(\()/, 
-			/\A(\))/, 
-			/\A(;)/, 
-			/\A(IF)/, 
-			/\A(THEN)/, 
-			/\A(ELSE)/, 
-			/\A(,)/, 
-			/\A(\+)/, 
-			/\A(-)/, 
-			/\A(OR)/, 
-			/\A(END)/, 
-			/\A(NOT)/, 
-			/\A(TRUE)/, 
-			/\A(FALSE)/, 
-			/\A(\w)/,
-			/\A(\d)/
-		]
+		attr_accessor :terminals
 
-		def initialize
+		def initialize(terminals = nil)
+			@terminals = terminals
 		end
 
 		def analyze(input)
-			terminals = []
+			tokens = []
 			errors = []
 			i = 0
 			while i < input.length
@@ -39,10 +18,10 @@ module Small
 					i += $1.length
 				else
 					found = false
-					for t in TERMINALS
+					for t in terminals
 						if t =~ input[i..-1]	# match tokens to terminals
 							i += $1.length 		# next token
-							terminals << $1 	# add to terminals
+							tokens << $1 		# add to tokens
 							found = true
 							break
 						end
@@ -61,7 +40,7 @@ module Small
 			# raise if any erros
 			raise LexicalAnalyzerError.new(errors.join("\n")) if errors.any?
 
-			terminals
+			tokens
 		end
 	end
 end
