@@ -49,10 +49,10 @@ describe Small::SyntaxAnalyzer do
 	end
 
 	it "word with unknown rule" do
-		tokens = [['a', 1, ''], ['a', 1, ''], ['b', 1, ''],]
+		tokens = [['a', 1, ''], ['a', 1, ''], ['b', 1, 'err'],]
 		lambda {
 			syntax_analyzer.analyze(tokens)
-		}.should raise_error Small::SyntaxAnalyzerError, /\ASyntax error: Unexpected b on line 1:/
+		}.should raise_error Small::SyntaxAnalyzerError, /\ASyntax error: Unexpected b on line 1: err/
 	end
 
 	it "word with unexpected terminal" do
