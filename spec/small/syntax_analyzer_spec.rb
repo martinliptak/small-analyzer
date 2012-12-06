@@ -28,43 +28,44 @@ describe Small::SyntaxAnalyzer do
 	}
 
 	it "analyzes correct word" do
-		tokens = %w{a b d a}
+		tokens = [['a', 1, ''], ['b', 1, ''], ['d', 1, ''], ['a', 1, '']]
 		syntax_analyzer.analyze(tokens)
 	end
 
 	it "analyzes correct word" do
-		tokens = %w{a d a}
+		tokens = [['a', 1, ''], ['d', 1, ''], ['a', 1, ''],]
 		syntax_analyzer.analyze(tokens)
 	end
 
 	it "analyzes correct word" do
-		tokens = %w{a a d}
+		tokens = [['a', 1, ''], ['a', 1, ''], ['d', 1, ''],]
 		syntax_analyzer.analyze(tokens)
 	end
 
 	it "analyzes correct word" do
-		tokens = %w{a a a a a a}
+		tokens = [['a', 1, ''], ['a', 1, ''], ['a', 1, ''], ['a', 1, ''], 
+			['a', 1, ''], ['a', 1, ''],]
 		syntax_analyzer.analyze(tokens)
 	end
 
 	it "word with unknown rule" do
-		tokens = %w{a a b}
+		tokens = [['a', 1, ''], ['a', 1, ''], ['b', 1, ''],]
 		lambda {
 			syntax_analyzer.analyze(tokens)
-		}.should raise_error Small::SyntaxAnalyzerUnknownError
+		}.should raise_error Small::SyntaxAnalyzerError, /\ASyntax error: Unexpected b on line 1:/
 	end
 
 	it "word with unexpected terminal" do
-		tokens = %w{a b a a}
+		tokens = [['a', 1, ''], ['b', 1, ''], ['a', 1, ''], ['a', 1, ''],]
 		lambda {
 			syntax_analyzer.analyze(tokens)
-		}.should raise_error Small::SyntaxAnalyzerUnexpectedError
+		}.should raise_error Small::SyntaxAnalyzerError, /\ASyntax error: Found a where d expected on line 1:/
 	end
 
 	it "word with remaining terminals" do
-		tokens = %w{a b d a a}
+		tokens = [['a', 1, ''], ['b', 1, ''], ['d', 1, ''], ['a', 1, ''], ['a', 1, ''],]
 		lambda {
 			syntax_analyzer.analyze(tokens)
-		}.should raise_error Small::SyntaxAnalyzerRemainingError
+		}.should raise_error Small::SyntaxAnalyzerError, /\ASyntax error: Found a where EOF expected on line 1:/
 	end
 end
