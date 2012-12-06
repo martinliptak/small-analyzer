@@ -46,7 +46,7 @@ syntax_analyzer.initial = :P
 begin
 	tokens = lexical_analyzer.analyze(input)
 	tokens.each { |token|
-		puts token
+		puts "#{token[0]}\t\t#{token[1]}\t#{token[2]}"
 	}
 	#syntax_analyzer.analyze(tokens)
 rescue Small::AnalyzerError => error

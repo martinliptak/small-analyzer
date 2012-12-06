@@ -33,8 +33,23 @@ describe Small::LexicalAnalyzer do
 	it "analyzes correct input" do
 		input = "BEGIN\n\tIF TRUE THEN \n \t WRITE(a);\n\tELSE \n \t WRITE(b);\n"
 		tokens = lexical_analyzer.analyze(input)
-		tokens.should == ['BEGIN', 'IF', 'TRUE', 'THEN', 'WRITE', '(', 'a', ')', ';',
-			'ELSE', 'WRITE', '(', 'b', ')', ';']
+		tokens.should == [
+			['BEGIN', 1, 'BEGIN'], 
+			['IF', 2, 'IF TRUE THEN'], 
+			['TRUE', 2, 'IF TRUE THEN'], 
+			['THEN', 2, 'IF TRUE THEN'], 
+			['WRITE', 3, 'WRITE(a);'], 
+			['(', 3, 'WRITE(a);'], 
+			['a', 3, 'WRITE(a);'], 
+			[')', 3, 'WRITE(a);'], 
+			[';', 3, 'WRITE(a);'], 
+			['ELSE', 4, 'ELSE'], 
+			['WRITE', 5, 'WRITE(b);'], 
+			['(', 5, 'WRITE(b);'], 
+			['b', 5, 'WRITE(b);'], 
+			[')', 5, 'WRITE(b);'], 
+			[';', 5, 'WRITE(b);']
+		]
 	end
 
 	it "analyzes incorrect input" do
