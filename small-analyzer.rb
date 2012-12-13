@@ -11,29 +11,29 @@ end
 input = file.read
 
 lexical_analyzer = Small::LexicalAnalyzer.new
-lexical_analyzer.terminals = [
-	/\A(BEGIN)/, 
-	/\A(END)/, 
-	/\A(:=)/, 
-	/\A(READ)/, 
-	/\A(WRITE)/, 
-	/\A(\()/, 
-	/\A(\))/, 
-	/\A(;)/, 
-	/\A(IF)/, 
-	/\A(THEN)/, 
-	/\A(ELSE)/, 
-	/\A(,)/, 
-	/\A(\+)/, 
-	/\A(-)/, 
-	/\A(OR)/, 
-	/\A(END)/, 
-	/\A(NOT)/, 
-	/\A(TRUE)/, 
-	/\A(FALSE)/, 
-	/\A(\w)/,
-	/\A(\d)/
-]
+lexical_analyzer.terminals = {
+	/\A(BEGIN)/ => 'BEGIN', 
+	/\A(END)/ => 'END', 
+	/\A(:=)/ => ':=', 
+	/\A(READ)/ => 'READ', 
+	/\A(WRITE)/ => 'WRITE', 
+	/\A(\()/ => '(', 
+	/\A(\))/ => ')', 
+	/\A(;)/ => ';', 
+	/\A(IF)/ => 'IF', 
+	/\A(THEN)/ => 'THEN', 
+	/\A(ELSE)/ => 'ELSE', 
+	/\A(,)/ => ',', 
+	/\A(\+)/ => '+', 
+	/\A(-)/ => '-', 
+	/\A(OR)/ => 'OR', 
+	/\A(END)/ => 'END', 
+	/\A(NOT)/ => 'NOT', 
+	/\A(TRUE)/ => 'TRUE', 
+	/\A(FALSE)/ => 'FALSE', 
+	/\A(\d+)/ => 'NUMBER',
+	/\A(\w[\w\d]*)/ => 'IDENTIFIER'
+}
 
 syntax_analyzer = Small::SyntaxAnalyzer.new
 syntax_analyzer.table = {

@@ -22,10 +22,10 @@ module Small
 
 					found = false
 					# match tokens to terminals
-					for t in terminals
+					for t in terminals.keys
 						if t =~ input[i..-1]	
-							i += $1.length 						# next token
-							tokens << [$1, line_number, line] 	# add to tokens
+							i += $1.length 									# next token
+							tokens << [terminals[t], line_number, line] 	# add to tokens
 							found = true
 							break
 						end
