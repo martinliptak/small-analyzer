@@ -36,6 +36,8 @@ module Small
 						# add to errors
 						errors << "Lexical error at line #{line_number}: #{line}"
 
+						puts "Lexical error at line #{line_number}: #{line}" if $debug
+						
 						# skip character and continue
 						i += 1 
 					end

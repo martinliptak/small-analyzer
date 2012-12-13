@@ -1,0 +1,12 @@
+BEGIN
+	READ (a, b);
+
+	sucet := a + b;
+	rozdiel := a - b;
+
+	IF tRUEE THEN
+		WRITE (sucet);
+	ELSE
+		WRITE (rozdiel);
+	;
+END

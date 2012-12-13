@@ -25,7 +25,11 @@ syntax_analyzer.initial = :program
 
 begin
 	tokens = lexical_analyzer.analyze(input)
-	#syntax_analyzer.analyze(tokens)
+	syntax_analyzer.analyze(tokens)
 rescue Small::AnalyzerError => error
+	if $debug
+		puts
+		puts "Errors"
+	end
 	puts error
 end

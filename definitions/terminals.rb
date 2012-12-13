@@ -18,6 +18,6 @@
 	/\A(NOT)/ => 'NOT', 
 	/\A(TRUE)/ => 'TRUE', 
 	/\A(FALSE)/ => 'FALSE', 
-	/\A(\d+)/ => 'DIGIT',
-	/\A(\w[\w\d]*)/ => 'LETTER'
+	/\A(\d)/ => 'DIGIT',
+	/\A(\w)/ => 'LETTER'
 }

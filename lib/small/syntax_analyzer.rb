@@ -31,6 +31,9 @@ module Small
 				if top.nil?
 					# remaining terminals, no recovery
 					errors << "Syntax error: Found #{token} where EOF expected on line #{line_number}: #{line}"
+
+					puts "Syntax error: Found #{token} where EOF expected on line #{line_number}: #{line}" if $debug
+
 					break
 				elsif top.is_a?(Symbol)
 					# non-terminal
@@ -41,6 +44,8 @@ module Small
 					else
 						# no rule, continue with next stack item
 						errors << "Syntax error: Unexpected #{token} on line #{line_number}: #{line}"
+
+						puts "Syntax error: Unexpected #{token} on line #{line_number}: #{line}" if $debug
 					end
 				elsif top == token
 					# expected terminal, continue with next stack item and next terminal
@@ -49,6 +54,8 @@ module Small
 				else
 					# unexpected terminal, continue with next stack item
 					errors << "Syntax error: Found #{token} where #{top} expected on line #{line_number}: #{line}"
+
+					puts "Syntax error: Found #{token} where #{top} expected on line #{line_number}: #{line}" if $debug
 				end	
 			end
 
