@@ -11,37 +11,15 @@ end
 input = file.read
 
 lexical_analyzer = Small::LexicalAnalyzer.new
-lexical_analyzer.terminals = {
-	/\A(BEGIN)/ => 'BEGIN', 
-	/\A(END)/ => 'END', 
-	/\A(:=)/ => ':=', 
-	/\A(READ)/ => 'READ', 
-	/\A(WRITE)/ => 'WRITE', 
-	/\A(\()/ => '(', 
-	/\A(\))/ => ')', 
-	/\A(;)/ => ';', 
-	/\A(IF)/ => 'IF', 
-	/\A(THEN)/ => 'THEN', 
-	/\A(ELSE)/ => 'ELSE', 
-	/\A(,)/ => ',', 
-	/\A(\+)/ => '+', 
-	/\A(-)/ => '-', 
-	/\A(OR)/ => 'OR', 
-	/\A(END)/ => 'END', 
-	/\A(NOT)/ => 'NOT', 
-	/\A(TRUE)/ => 'TRUE', 
-	/\A(FALSE)/ => 'FALSE', 
-	/\A(\d+)/ => 'NUMBER',
-	/\A(\w[\w\d]*)/ => 'IDENTIFIER'
-}
+lexical_definitions_file = File.expand_path('definitions/terminals.rb', 
+	File.dirname(__FILE__))
+lexical_analyzer.terminals = eval(File.read(lexical_definitions_file))
 
 syntax_analyzer = Small::SyntaxAnalyzer.new
-syntax_analyzer.table = {
-	:P => {
-		'BEGIN' => []
-	}
-}
-syntax_analyzer.initial = :P
+syntax_definitions_file = File.expand_path('definitions/table.rb', 
+	File.dirname(__FILE__))
+syntax_analyzer.table = eval(File.read(syntax_definitions_file))
+syntax_analyzer.initial = :program
 
 begin
 	tokens = lexical_analyzer.analyze(input)
