@@ -3,6 +3,8 @@ require "bundler/setup"
 
 require File.expand_path('lib/small', File.dirname(__FILE__))
 
+$debug = true
+
 file = if ARGV[0]
 	File.open(ARGV[0], 'r')
 else
@@ -23,9 +25,6 @@ syntax_analyzer.initial = :program
 
 begin
 	tokens = lexical_analyzer.analyze(input)
-	tokens.each { |token|
-		puts "#{token[0]}\t\t#{token[1]}\t#{token[2]}"
-	}
 	#syntax_analyzer.analyze(tokens)
 rescue Small::AnalyzerError => error
 	puts error

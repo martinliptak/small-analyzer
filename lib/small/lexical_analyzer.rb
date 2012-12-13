@@ -13,6 +13,7 @@ module Small
 			tokens = []
 			errors = []
 			i = 0
+			puts "Lexical analysis" if $debug
 			while i < input.length
 				if input[i..-1] =~ /\A(\s+)/ 	# skip white characters
 					i += $1.length
@@ -27,6 +28,7 @@ module Small
 							i += $1.length 									# next token
 							tokens << [terminals[t], line_number, line] 	# add to tokens
 							found = true
+							puts "Found terminal #{terminals[t]} at #{line_number}" if $debug
 							break
 						end
 					end

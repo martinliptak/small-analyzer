@@ -14,11 +14,13 @@ module Small
 			stack = []
 			errors = []
 
+			puts "Syntax analysis" if $debug
+
 			stack.push initial
 			
 			i = 0
 			while i < tokens.count
-				#puts stack.reverse.map{|a| a.is_a?(Symbol) ? ":#{a}" : a}.join(' ')
+				puts "Stack #{stack.reverse.map{|a| a.is_a?(Symbol) ? ":#{a}" : a}.join(' ')}" if $debug
 
 				token = tokens[i][0]
 				line_number = tokens[i][1]
@@ -34,6 +36,7 @@ module Small
 					# non-terminal
 					if table[top] and table[top][token]
 						# found rule, continue with added stack items
+						puts "Using rule :#{top}" if $debug
 						stack += table[top][token].reverse
 					else
 						# no rule, continue with next stack item
@@ -41,6 +44,7 @@ module Small
 					end
 				elsif top == token
 					# expected terminal, continue with next stack item and next terminal
+					puts "Found expected terminal #{top}" if $debug
 					i += 1
 				else
 					# unexpected terminal, continue with next stack item
