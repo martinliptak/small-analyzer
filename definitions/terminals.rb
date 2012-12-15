@@ -14,10 +14,10 @@
 	/\A(\+)/ => '+', 
 	/\A(-)/ => '-', 
 	/\A(OR)/ => 'OR', 
-	/\A(END)/ => 'END', 
+	/\A(AND)/ => 'AND', 
 	/\A(NOT)/ => 'NOT', 
 	/\A(TRUE)/ => 'TRUE', 
 	/\A(FALSE)/ => 'FALSE', 
 	/\A(\d)/ => 'DIGIT',
-	/\A(\w)/ => 'LETTER'
+	/\A([a-z])/ => 'LETTER'
 }
