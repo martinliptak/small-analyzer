@@ -4,34 +4,12 @@ describe Small::LexicalAnalyzer do
 
 	let(:lexical_analyzer) {
 		lexical_analyzer = Small::LexicalAnalyzer.new
-		lexical_analyzer.terminals = {
-			/\A(BEGIN)/ => 'BEGIN', 
-			/\A(END)/ => 'END', 
-			/\A(:=)/ => ':=', 
-			/\A(READ)/ => 'READ', 
-			/\A(WRITE)/ => 'WRITE', 
-			/\A(\()/ => '(', 
-			/\A(\))/ => ')', 
-			/\A(;)/ => ';', 
-			/\A(IF)/ => 'IF', 
-			/\A(THEN)/ => 'THEN', 
-			/\A(ELSE)/ => 'ELSE', 
-			/\A(,)/ => ',', 
-			/\A(\+)/ => '+', 
-			/\A(-)/ => '-', 
-			/\A(OR)/ => 'OR', 
-			/\A(END)/ => 'END', 
-			/\A(NOT)/ => 'NOT', 
-			/\A(TRUE)/ => 'TRUE', 
-			/\A(FALSE)/ => 'FALSE', 
-			/\A(\d+)/ => 'NUMBER',
-			/\A(\w[\w\d]*)/ => 'IDENTIFIER'
-		}
+		lexical_analyzer.terminals = eval(File.read('./definitions/terminals.rb'))
 		lexical_analyzer
 	}
 
 	it "analyzes correct input" do
-		input = "BEGIN\n\tIF TRUE THEN \n \t WRITE(aa);\n\tELSE \n \t WRITE(b); \n335\nadd21integers"
+		input = "BEGIN\n\tIF TRUE THEN \n \t WRITE(aa);\n\tELSE \n \t WRITE(b); \n335\na2i"
 		tokens = lexical_analyzer.analyze(input)
 		tokens.should == [
 			['BEGIN', 1, 'BEGIN'], 
@@ -40,17 +18,22 @@ describe Small::LexicalAnalyzer do
 			['THEN', 2, 'IF TRUE THEN'], 
 			['WRITE', 3, 'WRITE(aa);'], 
 			['(', 3, 'WRITE(aa);'], 
-			['IDENTIFIER', 3, 'WRITE(aa);'], 
+			['LETTER', 3, 'WRITE(aa);'], 
+			['LETTER', 3, 'WRITE(aa);'],
 			[')', 3, 'WRITE(aa);'], 
 			[';', 3, 'WRITE(aa);'], 
 			['ELSE', 4, 'ELSE'], 
 			['WRITE', 5, 'WRITE(b);'], 
 			['(', 5, 'WRITE(b);'], 
-			['IDENTIFIER', 5, 'WRITE(b);'], 
+			['LETTER', 5, 'WRITE(b);'], 
 			[')', 5, 'WRITE(b);'], 
 			[';', 5, 'WRITE(b);'], 
-			['NUMBER', 6, '335'],
-			['IDENTIFIER', 7, 'add21integers']
+			['DIGIT', 6, '335'],
+			['DIGIT', 6, '335'],
+			['DIGIT', 6, '335'],
+			['LETTER', 7, 'a2i'],
+			['DIGIT', 7, 'a2i'],
+			['LETTER', 7, 'a2i']
 		]
 	end
 

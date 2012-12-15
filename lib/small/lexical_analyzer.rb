@@ -10,44 +10,42 @@ module Small
 		end
 
 		def analyze(input)
+		
 			tokens = []
 			errors = []
-			i = 0
+			regexp = /\A(BEGIN|END|:=|READ|WRITE|\(|\)|;|IF|THEN|ELSE|,|\+|\-|OR|AND|NOT|TRUE|FALSE|[a-z]|[0-9])/
+
 			puts "Lexical analysis" if $debug
-			while i < input.length
-				if input[i..-1] =~ /\A(\s+)/ 	# skip white characters
-					i += $1.length
-				else
-					line_number = input[0..i].lines.count
-					line = input.lines.to_a[line_number - 1].strip
+			
+			input.lines.each_with_index do |line, i|
+			
+				line.strip!
+				buffer = line.dup
+			
+				while buffer.length > 0 do
 
-					found = false
-					# match tokens to terminals
-					for t in terminals.keys
-						if t =~ input[i..-1]	
-							i += $1.length 									# next token
-							tokens << [terminals[t], line_number, line] 	# add to tokens
-							found = true
-							puts "Found terminal #{terminals[t]} at #{line_number}" if $debug
-							break
-						end
-					end
-					unless found
-						# add to errors
-						errors << "Lexical error at line #{line_number}: #{line}"
+					buffer.lstrip!
+					result = buffer.match(regexp)
 
-						puts "Lexical error at line #{line_number}: #{line}" if $debug
+					if result.nil?
+						errors << "Lexical error at line #{i+1}: #{line}"	
+						buffer.slice!(0, 1)
+					else
+						tokens << [ @terminals[result[1]], i+1, line ]
+						puts "Found terminal #{result[1]} at #{i+1}" if $debug
 						
-						# skip character and continue
-						i += 1 
+						buffer.slice!(0, result[1].length)
 					end
+										
 				end
+			
 			end
-
+			
 			# raise if any erros
 			raise LexicalAnalyzerError.new(errors.join("\n")) if errors.any?
 
 			tokens
+			
 		end
 	end
 end
